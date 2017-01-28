@@ -30,7 +30,7 @@ defmodule Switchex.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:switchboard, path: "/Users/jsw/workspace/elixir/switchboard"}
+      {:switchboard, github: "jakewilkins/switchboard"}
     ]
   end
 end
