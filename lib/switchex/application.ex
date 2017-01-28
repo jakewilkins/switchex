@@ -21,9 +21,9 @@ defmodule Switchex.Application do
     started = Supervisor.start_link(children, opts)
 
     Application.get_env(Switchex, :logins, [])
-    |> Enum.each(fn({hostname, username, password, mailboxes} ->
+    |> Enum.each(fn({hostname, username, password, mailboxes}) ->
       Switchex.login(hostname, username, password, mailboxes)
-    end))
+    end)
 
     started
   end
