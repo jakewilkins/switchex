@@ -18,6 +18,13 @@ defmodule Switchex.Application do
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Switchex.Supervisor]
-    Supervisor.start_link(children, opts)
+    started = Supervisor.start_link(children, opts)
+
+    Application.get_env(Switchex, :logins, [])
+    |> Enum.each(fn({hostname, username, password, mailboxes} ->
+      Switchex.login(hostname, username, password, mailboxes)
+    end))
+
+    started
   end
 end
