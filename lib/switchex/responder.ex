@@ -1,11 +1,10 @@
 defmodule Switchex.Responder do
-  @name __MODULE__
 
   alias Switchex.Email
 
   defmacro __using__(_opts) do
     quote do
-      import unquote(__MODULE__), except: [process: 3]
+      import unquote(__MODULE__) 
       alias Switchex.Email
 
       def start_link() do
@@ -18,35 +17,36 @@ defmodule Switchex.Responder do
         loop()
       end
 
+      def loop() do
+        receive do
+          {:new, {account, mbox}, attrs} ->
+            email = fetch_email(account, mbox, attrs)
+            apply(__MODULE__, :process, [account, mbox, email])
+          :info -> 
+            IO.puts "we're here alright!"
+        end
+        loop()
+      end
+
     end
   end
 
-  def loop() do
-    receive do
-      {:new, {account, mbox}, attrs} ->
-        email = fetch_email(account, mbox, attrs)
-        process(account, mbox, email)
-      {:test, account, mbox, message} ->
-        process(account, mbox, message)
-    end
-    loop()
-  end
-
-  defmacro for_account(account, message, mmbox \\ :all, do: block) do
+  defmacro for_account(account, use: func) do
     quote do
-      if unquote(mmbox) == :all do
-        def process(account = unquote(account), mailbox, unquote(message)) do
-          unquote(block)
-        end
-      else
-        def process(account = unquote(account), mailbox = mmbox, unquote(message)) do
-          unquote(block)
-        end
+      def process(account = unquote(account), mailbox, message) do
+        apply(unquote(func), [account, mailbox, message])
+      end
+    end
+  end
+  defmacro for_account(account, mailbox, use: func) do
+    quote do
+      def process(account = unquote(account), mailbox = unquote(mailbox), message) do
+        apply(unquote(func), [account, mailbox, message])
       end
     end
   end
 
-  defp fetch_email(account, mbox, attrs) do
+  def fetch_email(account, mbox, attrs) do
     {:ok, mbid} = :switchboard_jmap.mailbox_name_to_id(account, mbox)
 
     message = Email.from_attrs(attrs, account, mbox)
@@ -59,10 +59,5 @@ defmodule Switchex.Responder do
 
     %{message | body: Keyword.get(Keyword.get(fetched_message, :list) |> hd, :textBody)}
   end
-
-  def process(account, mailbox, email) do
-    IO.puts "email received: #{mailbox}"
-  end
-  defoverridable [process: 3]
 
 end
