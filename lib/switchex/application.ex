@@ -20,7 +20,7 @@ defmodule Switchex.Application do
     opts = [strategy: :one_for_one, name: Switchex.Supervisor]
     started = Supervisor.start_link(children, opts)
 
-    Application.get_env(Switchex, :logins, [])
+    Application.get_env(:switchex, :logins, [])
     |> Enum.each(fn({hostname, username, password, mailboxes}) ->
       Switchex.login(hostname, username, password, mailboxes)
     end)
