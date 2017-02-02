@@ -2,7 +2,7 @@ defmodule Switchex.Email do
   import Keyword, only: [get: 2]
 
   defstruct([from: "", from_name: "", to: "", to_name: "", subject: "", uid: "",
-             body: "", internal: %{}])
+             body: "", internal: %{}, raw: ""])
 
   def from_attrs(attrs, acc, mbox) do
     [{:address, from}] = get_in(attrs, [:envelope, :from])

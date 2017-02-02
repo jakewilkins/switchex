@@ -1,0 +1,10 @@
+%{"cowboy": {:git, "https://github.com/ninenines/cowboy.git", "b8e4115eb13488c517d8d8ef33c47d0eaa7838c6", [tag: "1.0.3"]},
+  "cowlib": {:git, "https://github.com/ninenines/cowlib.git", "d544a494af4dbc810fc9c15eaf5cc050cced1501", [ref: "1.0.0"]},
+  "goldrush": {:git, "https://github.com/basho/goldrush.git", "8f1b715d36b650ec1e1f5612c00e28af6ab0de82", [tag: "0.1.9"]},
+  "gproc": {:git, "https://github.com/uwiger/gproc.git", "01c8fbfdd5e4701e8e4b57b0c8279872f9574b0b", []},
+  "jsx": {:git, "https://github.com/talentdeficit/jsx.git", "aaf915e173d0ea7e1201c0edd4930dc6c3cd179d", []},
+  "lager": {:git, "https://github.com/basho/lager.git", "81eaef0ce98fdbf64ab95665e3bc2ec4b24c7dac", []},
+  "mailibex": {:hex, :mailibex, "0.1.2", "11f7ea079e640480d0b6d65318250e4535fd386dc2570d52af7a2aec28eb3019", [:mix], [{:codepagex, "~> 0.1", [hex: :codepagex, optional: true]}]},
+  "poolboy": {:git, "https://github.com/devinus/poolboy.git", "d378f996182daa6251ad5438cee4d3f6eb7ea50f", []},
+  "ranch": {:git, "https://github.com/ninenines/ranch.git", "741bfb73ca663394ecf7a73410506d66f01985a6", [tag: "1.1.0"]},
+  "switchboard": {:git, "https://github.com/jakewilkins/switchboard.git", "c81cbe0896d38c7d622f59be75eb13e4ea00c806", []}}

@@ -30,7 +30,8 @@ defmodule Switchex.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:switchboard, github: "jakewilkins/switchboard"}
+      {:switchboard, github: "jakewilkins/switchboard"},
+      {:mailibex, "~> 0.1.2"},
     ]
   end
 end
