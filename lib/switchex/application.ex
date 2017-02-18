@@ -12,19 +12,12 @@ defmodule Switchex.Application do
     children = [
       # Starts a worker by calling: Switchex.Worker.start_link(arg1, arg2, arg3)
       # worker(Switchex.Worker, [arg1, arg2, arg3]),
-      supervisor(:switchboard_sup, [])
+      supervisor(Switchex.Supervisor, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Switchex.Supervisor]
-    started = Supervisor.start_link(children, opts)
-
-    Application.get_env(:switchex, :logins, [])
-    |> Enum.each(fn {hostname, username, password, mailboxes} ->
-      Switchex.login(hostname, username, password, mailboxes)
-    end)
-
-    started
+    Supervisor.start_link(children, opts)
   end
 end

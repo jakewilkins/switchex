@@ -9,13 +9,11 @@ defmodule Switchex.Responder do
 
       def start_link() do
         pid = spawn_link(__MODULE__, :init, [])
-        IO.puts "started on #{inspect pid}"
         {:ok, pid}
       end
 
       def init() do
         :switchboard.subscribe(:new)
-        IO.puts "inited"
         loop()
       end
 
@@ -23,7 +21,6 @@ defmodule Switchex.Responder do
         receive do
           {:new, {account, mbox}, attrs} ->
             email = fetch_email(account, mbox, attrs)
-            IO.puts "received email at: #{account}"
             apply(__MODULE__, :process, [account, mbox, email])
           :info -> 
             IO.puts "we're here alright!"
@@ -74,7 +71,7 @@ defmodule Switchex.Responder do
     end
 
     if String.starts_with?(raw, "--") do
-      boundary = raw |> String.split("\r\n") |> List.first |> String.replace("--", "")
+      boundary = raw |> String.split("\r\n") |> List.first |> String.replace("--", "", global: false)
       parsed = %MimeMail{body: {:raw, raw}, headers: [{:"content-type", {"multipart/mixed", %{boundary: boundary}}}]}
         |> MimeMail.decode_body
 
