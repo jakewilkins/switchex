@@ -13,7 +13,9 @@ defmodule Switchex.Responder do
       end
 
       def init() do
-        :switchboard.subscribe(:new)
+        Switchex.ResubscribeEventHandler.subscribe(self)
+
+        send(self, :resubscribe)
         loop()
       end
 
@@ -22,6 +24,7 @@ defmodule Switchex.Responder do
           {:new, {account, mbox}, attrs} ->
             email = fetch_email(account, mbox, attrs)
             apply(__MODULE__, :process, [account, mbox, email])
+          :resubscribe -> :switchboard.subscribe(:new)
           :info -> 
             IO.puts "we're here alright!"
         end

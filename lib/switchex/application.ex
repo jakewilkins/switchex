@@ -12,6 +12,7 @@ defmodule Switchex.Application do
     children = [
       # Starts a worker by calling: Switchex.Worker.start_link(arg1, arg2, arg3)
       # worker(Switchex.Worker, [arg1, arg2, arg3]),
+      worker(Switchex.ResubscribeEventHandler, []),
       supervisor(Switchex.Supervisor, [])
     ]
 
